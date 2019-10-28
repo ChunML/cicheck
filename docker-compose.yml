@@ -1,0 +1,25 @@
+version: 3.7
+
+services:
+  client:
+    build:
+      context: ./services/client
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3000
+    volumes:
+      - ./services/client:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+
+  nginx:
+    build:
+      context: ./services/nginx
+      dockerfile: Dockerfile
+    restart:
+      always
+    ports:
+      - 80:80
+    depends_on:
+      - client
